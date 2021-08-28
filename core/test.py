@@ -8,7 +8,7 @@ import os
 import torch
 import torch.backends.cudnn
 import torch.utils.data
-
+from torch.utils.tensorboard import SummaryWriter
 import utils.binvox_visualization
 import utils.data_loaders
 import utils.data_transforms
@@ -24,9 +24,9 @@ from models.merger import Merger
 
 def test_net(cfg,
              epoch_idx=-1,
-             output_dir=None,
+             output_dir='.',
              test_data_loader=None,
-             test_writer=None,
+             test_writer=SummaryWriter(),
              encoder=None,
              decoder=None,
              refiner=None,

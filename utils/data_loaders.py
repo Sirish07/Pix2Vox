@@ -339,8 +339,9 @@ class Pix3dDataset(torch.utils.data.dataset.Dataset):
 
         # Get data of volume
         with open(volume_path, 'rb') as f:
-            volume = utils.binvox_rw.read_as_3d_array(f)
-            volume = volume.data.astype(np.float32)
+            # volume = utils.binvox_rw.read_as_3d_array(f)
+            volume = np.load(volume_path)
+            volume = volume.astype(np.float32)
 
         return taxonomy_name, sample_name, np.asarray([rendering_image]), volume, bounding_box
 
@@ -413,7 +414,7 @@ class Pix3dDataLoader:
             ]  # yapf: disable
             model_name_parts = annotations['voxel'].split('/')
             model_name = model_name_parts[2]
-            volume_file_name = model_name_parts[3][:-4].replace('voxel', 'model')
+            volume_file_name = model_name_parts[3][:-4]
 
             # Get file path of volumes
             volume_file_path = self.volume_path_template % (taxonomy_name, model_name, volume_file_name)
