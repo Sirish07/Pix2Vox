@@ -458,7 +458,7 @@ class CustomDataset(torch.utils.data.dataset.Dataset):
         
         # Get data of rendering images
         rendering_image = cv2.imread(rendering_image_path, cv2.IMREAD_UNCHANGED).astype(np.float32) / 255.
-        
+        print(rendering_image_path)
         if len(rendering_image.shape) < 3:
             print('[WARN] %s It seems the image file %s is grayscale.' % (dt.now(), rendering_image_path))
             rendering_image = np.stack((rendering_image, ) * 3, -1)
