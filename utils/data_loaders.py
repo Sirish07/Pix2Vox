@@ -345,7 +345,7 @@ class Pix3dDataset(torch.utils.data.dataset.Dataset):
         return taxonomy_name, sample_name, np.asarray([rendering_image]), volume, bounding_box
 
 
-# //////////////////////////////// = End of Pascal3dDataset Class Definition = ///////////////////////////////// #
+# //////////////////////////////// = End of Pix3dDataset Class Definition = ///////////////////////////////// #
 
 
 class Pix3dDataLoader:
@@ -434,10 +434,100 @@ class Pix3dDataLoader:
         return files_of_taxonomy
 
 
+# /////////////////////////////// = End of Pix3dDataLoader Class Definition = /////////////////////////////// #
+
+class CustomDataset(torch.utils.data.dataset.Dataset):
+    """Pix3D class used for PyTorch DataLoader"""
+    def __init__(self, file_list, transforms=None):
+        self.file_list = file_list
+        self.transforms = transforms
+
+    def __len__(self):
+        return len(self.file_list)
+
+    def __getitem__(self, idx):
+        rendering_images = self.get_datum(idx)
+
+        if self.transforms:
+            rendering_images = self.transforms(rendering_images)
+
+        return rendering_images
+
+    def get_datum(self, idx):
+        rendering_image_path = self.file_list[idx]
+        
+        # Get data of rendering images
+        rendering_image = cv2.imread(rendering_image_path, cv2.IMREAD_UNCHANGED).astype(np.float32) / 255.
+        
+        if len(rendering_image.shape) < 3:
+            print('[WARN] %s It seems the image file %s is grayscale.' % (dt.now(), rendering_image_path))
+            rendering_image = np.stack((rendering_image, ) * 3, -1)
+
+        # # Get data of volume
+        # with open(volume_path, 'rb') as f:
+        #     volume = utils.binvox_rw.read_as_3d_array(f)
+        #     volume = volume.data.astype(np.float32)
+
+        return np.asarray([rendering_image])
+
+
+# //////////////////////////////// = End of Pascal3dDataset Class Definition = ///////////////////////////////// #
+
+
+class CustomDataLoader:
+    def __init__(self, cfg):
+        self.rendering_image_path_template = cfg.DIR.IN_PATH
+
+    def get_dataset(self, n_views_rendering, transforms=None):
+        files = []
+        files_of_taxonomy = []
+        for x in self.rendering_image_path_template:
+            files_of_taxonomy.append({
+                'rendering_image': x,
+            })
+
+        files.extend(files_of_taxonomy)    
+        print('[INFO] %s Complete collecting files of the dataset. Total files: %d.' % (dt.now(), len(files)))
+        return CustomDataset(files, transforms)
+
+    # def get_files_of_taxonomy(self, taxonomy_name, samples):
+    #     files_of_taxonomy = []
+
+    #     for sample_idx, sample_name in enumerate(samples):
+    #         # Get image annotations
+    #         anno_key = '%s/%s' % (taxonomy_name, sample_name)
+    #         annotations = self.annotations[anno_key]
+
+    #         # Get file list of rendering images
+    #         _, img_file_suffix = os.path.splitext(annotations['img'])
+    #         rendering_image_file_path = self.rendering_image_path_template % (taxonomy_name, sample_name,
+    #                                                                           img_file_suffix[1:])
+
+    #         # Get the bounding box of the image
+    #         img_width, img_height = annotations['img_size']
+    #         bbox = [
+    #             annotations['bbox'][0] / img_width,
+    #             annotations['bbox'][1] / img_height,
+    #             annotations['bbox'][2] / img_width,
+    #             annotations['bbox'][3] / img_height
+    #         ]  # yapf: disable
+    #         model_name_parts = annotations['voxel'].split('/')
+    #         model_name = model_name_parts[2]
+    #         volume_file_name = model_name_parts[3][:-4].replace('voxel', 'model')
+
+    #         # Append to the list of rendering images
+    #         files_of_taxonomy.append({
+    #             'rendering_image': rendering_image_file_path,
+    #         })
+
+    #     return files_of_taxonomy
+
+
 # /////////////////////////////// = End of Pascal3dDataLoader Class Definition = /////////////////////////////// #
 
 DATASET_LOADER_MAPPING = {
     'ShapeNet': ShapeNetDataLoader,
     'Pascal3D': Pascal3dDataLoader,
-    'Pix3D': Pix3dDataLoader
+    'Pix3D': Pix3dDataLoader,
+    'Custom': CustomDataLoader
 }  # yapf: disable

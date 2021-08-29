@@ -35,10 +35,10 @@ def test_net(cfg,
     torch.backends.cudnn.benchmark = True
 
     # Load taxonomies of dataset
-    taxonomies = []
-    with open(cfg.DATASETS[cfg.DATASET.TEST_DATASET.upper()].TAXONOMY_FILE_PATH, encoding='utf-8') as file:
-        taxonomies = json.loads(file.read())
-    taxonomies = {t['taxonomy_id']: t for t in taxonomies}
+    # taxonomies = []
+    # with open(cfg.DATASETS[cfg.DATASET.TEST_DATASET.upper()].TAXONOMY_FILE_PATH, encoding='utf-8') as file:
+    #     taxonomies = json.loads(file.read())
+    # taxonomies = {t['taxonomy_id']: t for t in taxonomies}
 
     # Set up data loader
     if test_data_loader is None:

@@ -30,6 +30,7 @@ def get_args_from_command_line():
                         type=str)
     parser.add_argument('--rand', dest='randomize', help='Randomize (do not use a fixed seed)', action='store_true')
     parser.add_argument('--test', dest='test', help='Test neural networks', action='store_true')
+    parser.add_argument('--input', dest='inPath', help = 'Input images path for inference')
     parser.add_argument('--batch-size',
                         dest='batch_size',
                         help='name of the net',
@@ -54,6 +55,8 @@ def main():
         cfg.CONST.BATCH_SIZE = args.batch_size
     if args.epoch is not None:
         cfg.TRAIN.NUM_EPOCHES = args.epoch
+    if args.inPath is not None:
+        cfg.DIR.IN_PATH = args.inPath
     if args.out_path is not None:
         cfg.DIR.OUT_PATH = args.out_path
     if args.weights is not None:

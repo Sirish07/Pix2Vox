@@ -35,10 +35,10 @@ __C.DATASET                                 = edict()
 __C.DATASET.MEAN                            = [0.5, 0.5, 0.5]
 __C.DATASET.STD                             = [0.5, 0.5, 0.5]
 __C.DATASET.TRAIN_DATASET                   = 'ShapeNet'
-__C.DATASET.TEST_DATASET                    = 'ShapeNet'
+# __C.DATASET.TEST_DATASET                    = 'ShapeNet'
 # __C.DATASET.TEST_DATASET                  = 'Pascal3D'
 # __C.DATASET.TEST_DATASET                  = 'Pix3D'
-
+__C.DATASET.TEST_DATASET                  = 'Custom'
 #
 # Common
 #
@@ -56,6 +56,7 @@ __C.CONST.CROP_IMG_H                        = 128       # Dummy property for Pas
 #
 # Directories
 #
+__C.DIR.IN_PATH                             = './Images/sample.png'
 __C.DIR                                     = edict()
 __C.DIR.OUT_PATH                            = './output'
 __C.DIR.RANDOM_BG_PATH                      = '/home/hzxie/Datasets/SUN2012/JPEGImages'
