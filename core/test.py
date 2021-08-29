@@ -143,7 +143,7 @@ def test_net(cfg,
             test_iou[taxonomy_id]['iou'].append(sample_iou)
 
             # Append generated volumes to TensorBoard
-            if output_dir and sample_idx < 3:
+            if output_dir and sample_idx < 5:
                 img_dir = output_dir + 'Results'
                 # Volume Visualization
                 gv = generated_volume.cpu().numpy()
