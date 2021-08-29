@@ -478,15 +478,9 @@ class CustomDataLoader:
     def __init__(self, cfg):
         self.rendering_image_path_template = cfg.DIR.IN_PATH
 
-    def get_dataset(self, n_views_rendering, transforms=None):
+    def get_dataset(self, n_views_rendering, dataset_type = None, transforms=None):
         files = []
-        files_of_taxonomy = []
-        for x in self.rendering_image_path_template:
-            files_of_taxonomy.append({
-                'rendering_image': x,
-            })
-
-        files.extend(files_of_taxonomy)    
+        files.append(self.rendering_image_path_template)    
         print('[INFO] %s Complete collecting files of the dataset. Total files: %d.' % (dt.now(), len(files)))
         return CustomDataset(files, transforms)
 
