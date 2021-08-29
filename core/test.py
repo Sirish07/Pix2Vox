@@ -24,7 +24,7 @@ from models.merger import Merger
 
 def test_net(cfg,
              epoch_idx=-1,
-             output_dir='.',
+             output_dir=None,
              test_data_loader=None,
              test_writer=SummaryWriter(),
              encoder=None,
@@ -144,7 +144,7 @@ def test_net(cfg,
 
             # Append generated volumes to TensorBoard
             if output_dir and sample_idx < 3:
-                img_dir = output_dir % 'images'
+                img_dir = output_dir + 'images'
                 # Volume Visualization
                 gv = generated_volume.cpu().numpy()
                 rendering_views = utils.binvox_visualization.get_volume_views(gv, os.path.join(img_dir, 'test'),

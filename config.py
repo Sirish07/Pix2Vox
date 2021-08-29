@@ -24,9 +24,9 @@ __C.DATASETS.PASCAL3D.RENDERING_PATH        = '/home/hzxie/Datasets/PASCAL3D/Ima
 __C.DATASETS.PASCAL3D.VOXEL_PATH            = '/home/hzxie/Datasets/PASCAL3D/CAD/%s/%02d.binvox'
 __C.DATASETS.PIX3D                          = edict()
 __C.DATASETS.PIX3D.TAXONOMY_FILE_PATH       = './datasets/Pix3D.json'
-__C.DATASETS.PIX3D.ANNOTATION_PATH          = '/content/Pix3D/pix3d.json'
-__C.DATASETS.PIX3D.RENDERING_PATH           = '/content/Pix3D/img/%s/%s.%s'
-__C.DATASETS.PIX3D.VOXEL_PATH               = '/content/Pix3D/model/%s/%s/%s.npy'
+__C.DATASETS.PIX3D.ANNOTATION_PATH          = '/content/pix3d/pix3d.json'
+__C.DATASETS.PIX3D.RENDERING_PATH           = '/content/pix3d/img/%s/%s.%s'
+__C.DATASETS.PIX3D.VOXEL_PATH               = '/content/pix3d/model/%s/%s/%s.npy'
 
 #
 # Dataset
