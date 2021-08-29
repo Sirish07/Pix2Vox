@@ -19,7 +19,7 @@ def get_volume_views(volume, save_dir, n_itr):
     # ax.set_aspect('equal')
     ax.voxels(volume, edgecolor="k")
 
-    save_path = os.path.join(save_dir, 'voxels-%06d.png' % n_itr)
+    save_path = os.path.join(save_dir, 'voxels.png')
     plt.savefig(save_path, bbox_inches='tight')
     plt.close()
     return cv2.imread(save_path)
