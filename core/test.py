@@ -24,7 +24,7 @@ from models.merger import Merger
 
 def test_net(cfg,
              epoch_idx=-1,
-             output_dir=None,
+             output_dir='./',
              test_data_loader=None,
              test_writer=SummaryWriter(),
              encoder=None,
@@ -144,16 +144,16 @@ def test_net(cfg,
 
             # Append generated volumes to TensorBoard
             if output_dir and sample_idx < 3:
-                img_dir = output_dir + 'images'
+                img_dir = output_dir + 'Results'
                 # Volume Visualization
                 gv = generated_volume.cpu().numpy()
                 rendering_views = utils.binvox_visualization.get_volume_views(gv, os.path.join(img_dir, 'test'),
                                                                               epoch_idx)
-                test_writer.add_image('Test Sample#%02d/Volume Reconstructed' % sample_idx, rendering_views, epoch_idx)
+                # test_writer.add_image('Test Sample#%02d/Volume Reconstructed' % sample_idx, rendering_views, epoch_idx)
                 gtv = ground_truth_volume.cpu().numpy()
                 rendering_views = utils.binvox_visualization.get_volume_views(gtv, os.path.join(img_dir, 'test'),
                                                                               epoch_idx)
-                test_writer.add_image('Test Sample#%02d/Volume GroundTruth' % sample_idx, rendering_views, epoch_idx)
+                # test_writer.add_image('Test Sample#%02d/Volume GroundTruth' % sample_idx, rendering_views, epoch_idx)
 
             # Print sample loss and IoU
             print('[INFO] %s Test[%d/%d] Taxonomy = %s Sample = %s EDLoss = %.4f RLoss = %.4f IoU = %s' %
