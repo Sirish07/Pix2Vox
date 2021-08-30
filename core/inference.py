@@ -85,7 +85,7 @@ def inference(cfg,
         
         generated_volume = generated_volume.squeeze(0)
 
-        img_dir = '/sample_images'
+        img_dir = './sample_images'
         gv = generated_volume.cpu().numpy()
         rendering_views = utils.binvox_visualization.get_volume_views(gv, os.path.join(img_dir),
                                                                     epoch_idx)

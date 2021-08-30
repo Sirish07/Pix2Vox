@@ -19,7 +19,7 @@ from pprint import pprint
 from config import cfg
 from core.train import train_net
 from core.test import test_net
-
+from core.inference import inference
 
 def get_args_from_command_line():
     parser = ArgumentParser(description='Parser of Runner of Pix2Vox')
@@ -74,7 +74,7 @@ def main():
         train_net(cfg)
     else:
         if 'WEIGHTS' in cfg.CONST and os.path.exists(cfg.CONST.WEIGHTS):
-            test_net(cfg)
+            inference(cfg)
         else:
             print('[FATAL] %s Please specify the file path of checkpoint.' % (dt.now()))
             sys.exit(2)

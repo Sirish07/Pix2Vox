@@ -5,7 +5,7 @@
 import cv2
 import matplotlib.pyplot as plt
 import os
-
+import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 
 
@@ -16,9 +16,9 @@ def get_volume_views(volume, save_dir, n_itr):
     volume = volume.squeeze().__ge__(0.5)
     fig = plt.figure()
     ax = fig.gca(projection=Axes3D.name)
-    ax.set_aspect('equal')
+    # ax.set_aspect('equal')
     ax.voxels(volume, edgecolor="k")
-
+    volume = np.swapaxes(volume, 2, 1)
     save_path = os.path.join(save_dir, 'voxels.png')
     plt.savefig(save_path, bbox_inches='tight')
     plt.close()
