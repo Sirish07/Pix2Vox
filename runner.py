@@ -74,6 +74,7 @@ def main():
         train_net(cfg)
     else:
         if 'WEIGHTS' in cfg.CONST and os.path.exists(cfg.CONST.WEIGHTS):
+            print("Testing Pix2Vox")
             inference(cfg)
         else:
             print('[FATAL] %s Please specify the file path of checkpoint.' % (dt.now()))

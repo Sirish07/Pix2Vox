@@ -18,7 +18,7 @@ from models.refiner import Refiner
 from models.merger import Merger
 
 def inference(cfg,
-             epoch_idx=-1,
+             epoch_idx=1,
              output_dir=None,
              test_data_loader=None,
              test_writer=None,
@@ -28,15 +28,6 @@ def inference(cfg,
              merger=None):
     # Enable the inbuilt cudnn auto-tuner to find the best algorithm to use
     torch.backends.cudnn.benchmark = True
-
-    IMG_SIZE = cfg.CONST.IMG_H, cfg.CONST.IMG_W
-    CROP_SIZE = cfg.CONST.CROP_IMG_H, cfg.CONST.CROP_IMG_W
-    test_transforms = utils.data_transforms.Compose([
-        utils.data_transforms.CenterCrop(IMG_SIZE, CROP_SIZE),
-        utils.data_transforms.RandomBackground(cfg.TEST.RANDOM_BG_COLOR_RANGE),
-        utils.data_transforms.Normalize(mean=cfg.DATASET.MEAN, std=cfg.DATASET.STD),
-        utils.data_transforms.ToTensor(),
-    ])
 
     encoder = Encoder(cfg)
     decoder = Decoder(cfg)
@@ -51,19 +42,33 @@ def inference(cfg,
 
     print('[INFO] %s Loading weights from %s ...' % (dt.now(), cfg.CONST.WEIGHTS))
     checkpoint = torch.load(cfg.CONST.WEIGHTS)
-    epoch_idx = checkpoint['epoch_idx']
+    # epoch_idx = checkpoint['epoch_idx']
     encoder.load_state_dict(checkpoint['encoder_state_dict'])
     decoder.load_state_dict(checkpoint['decoder_state_dict'])
-
+    if cfg.NETWORK.USE_REFINER:
+            refiner.load_state_dict(checkpoint['refiner_state_dict'])
+    if cfg.NETWORK.USE_MERGER:
+            merger.load_state_dict(checkpoint['merger_state_dict'])
+            
     encoder.eval()
     decoder.eval()
     refiner.eval()
     merger.eval()
 
-    img1_path = '/ShapeNetRendering/02691156/1a04e3eab45ca15dd86060f189eb133/rendering/00.png'
+    img1_path = '/content/Pix2Vox/aero2.png'
     img1_np = cv2.imread(img1_path, cv2.IMREAD_UNCHANGED).astype(np.float32) / 255.
-
     sample = np.array([img1_np])
+    
+    IMG_SIZE = cfg.CONST.IMG_H, cfg.CONST.IMG_W
+    CROP_SIZE = cfg.CONST.CROP_IMG_H, cfg.CONST.CROP_IMG_W
+    test_transforms = utils.data_transforms.Compose([
+        utils.data_transforms.CenterCrop(IMG_SIZE, CROP_SIZE),
+        utils.data_transforms.RandomBackground(cfg.TEST.RANDOM_BG_COLOR_RANGE),
+        utils.data_transforms.Normalize(mean=cfg.DATASET.MEAN, std=cfg.DATASET.STD),
+        utils.data_transforms.ToTensor(),
+    ])
+
+    
     rendering_images = test_transforms(rendering_images=sample)
     rendering_images = rendering_images.unsqueeze(0)
 
@@ -76,6 +81,7 @@ def inference(cfg,
         raw_features, generated_volume = decoder(image_features)
 
         if cfg.NETWORK.USE_MERGER and epoch_idx >= cfg.TRAIN.EPOCH_START_USE_MERGER:
+            print("Using Merger and Refiner")
             generated_volume = merger(raw_features, generated_volume)
         else:
             generated_volume = torch.mean(generated_volume, dim=1)
