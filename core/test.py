@@ -23,7 +23,7 @@ from models.merger import Merger
 
 
 def test_net(cfg,
-             epoch_idx=-1,
+             epoch_idx=1,
              output_dir='./',
              test_data_loader=None,
              test_writer=SummaryWriter(),
