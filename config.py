@@ -35,10 +35,10 @@ __C.DATASET                                 = edict()
 __C.DATASET.MEAN                            = [0.5, 0.5, 0.5]
 __C.DATASET.STD                             = [0.5, 0.5, 0.5]
 __C.DATASET.TRAIN_DATASET                   = 'ShapeNet'
-__C.DATASET.TEST_DATASET                    = 'ShapeNet'
+# __C.DATASET.TEST_DATASET                    = 'ShapeNet'
 # __C.DATASET.TEST_DATASET                  = 'Pascal3D'
 # __C.DATASET.TEST_DATASET                  = 'Pix3D'
-
+__C.DATASET.TEST_DATASET                  = 'Custom'
 #
 # Common
 #
@@ -57,6 +57,7 @@ __C.CONST.CROP_IMG_H                        = 128       # Dummy property for Pas
 # Directories
 #
 __C.DIR                                     = edict()
+__C.DIR.IN_PATH                             = './Images/sample.png'
 __C.DIR.OUT_PATH                            = './output'
 __C.DIR.RANDOM_BG_PATH                      = '/home/hzxie/Datasets/SUN2012/JPEGImages'
 
@@ -66,6 +67,7 @@ __C.DIR.RANDOM_BG_PATH                      = '/home/hzxie/Datasets/SUN2012/JPEG
 __C.NETWORK                                 = edict()
 __C.NETWORK.LEAKY_VALUE                     = .2
 __C.NETWORK.TCONV_USE_BIAS                  = False
+__C.NETWORK.USE_REFINER                     = True
 __C.NETWORK.USE_MERGER                      = True
 
 #
@@ -85,9 +87,11 @@ __C.TRAIN.EPOCH_START_USE_REFINER           = 0
 __C.TRAIN.EPOCH_START_USE_MERGER            = 0
 __C.TRAIN.ENCODER_LEARNING_RATE             = 1e-3
 __C.TRAIN.DECODER_LEARNING_RATE             = 1e-3
+__C.TRAIN.REFINER_LEARNING_RATE             = 1e-3
 __C.TRAIN.MERGER_LEARNING_RATE              = 1e-4
 __C.TRAIN.ENCODER_LR_MILESTONES             = [150]
 __C.TRAIN.DECODER_LR_MILESTONES             = [150]
+__C.TRAIN.REFINER_LR_MILESTONES             = [150]
 __C.TRAIN.MERGER_LR_MILESTONES              = [150]
 __C.TRAIN.BETAS                             = (.9, .999)
 __C.TRAIN.MOMENTUM                          = .9
